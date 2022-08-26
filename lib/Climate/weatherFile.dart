@@ -24,17 +24,33 @@ class _WeatherState extends State<Weather> {
         ],
       ),
       body: Stack(
-        children: const <Widget>[
+        children: <Widget>[
           Center(
             child: Image(
-              image: AssetImage('/build/images/umbrella.png'),
+              image: AssetImage('lib/images/umbrella.png'),
               height: 1200.0,
               width: 600.0,
               fit: BoxFit.fill,
+            ),
+          ),
+          Container(
+            alignment: Alignment.topRight,
+            margin: EdgeInsets.fromLTRB(0.0, 10.9, 20.9, 0.0),
+            child: Text(
+              "Hyderabad",
+              style: cityStyle(),
             ),
           ),
         ],
       ),
     );
   }
+}
+
+TextStyle cityStyle() {
+  return const TextStyle(
+    color: Colors.white,
+    fontSize: 22.9,
+    fontStyle: FontStyle.italic,
+  );
 }
