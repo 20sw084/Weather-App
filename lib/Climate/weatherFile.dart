@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:weather_app/main.dart';
 import '../utils/apiFile.dart' as util;
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:weather_app/Climate/ChangeCity.dart';
 
 class Weather extends StatefulWidget {
   const Weather({Key? key}) : super(key: key);
@@ -13,7 +15,6 @@ class Weather extends StatefulWidget {
 class _WeatherState extends State<Weather> {
   void showStuff() async {
     Map data = await getWeather(util.apiId, util.defaultCity);
-    print(data.toString());
   }
 
   String? _cityEntered; // City removed from the text field
@@ -88,6 +89,7 @@ class _WeatherState extends State<Weather> {
   Widget updateTempWidget(String city) {
     return FutureBuilder(
       future: getWeather(util.apiId, city == null ? util.defaultCity : city),
+      // future: getWeather(util.apiId, city),
       builder: (BuildContext context, AsyncSnapshot<Map> snapshot) {
         if (snapshot.hasData) {
           Map content = snapshot.data!;
@@ -117,65 +119,6 @@ class _WeatherState extends State<Weather> {
           return Container();
         }
       },
-    );
-  }
-}
-
-// ignore: must_be_immutable
-class ChangeCity extends StatelessWidget {
-  final _cityFieldController = TextEditingController();
-
-  ChangeCity({Key? key}) : super(key: key);
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.red,
-        title: const Text('Change City'),
-        centerTitle: true,
-      ),
-      body: Stack(
-        children: <Widget>[
-          const Center(
-            child: Image(
-              image: AssetImage('lib/images/snow.png'),
-              height: 1200.0,
-              width: 600.0,
-              fit: BoxFit.fill,
-            ),
-          ),
-          ListView(
-            children: <Widget>[
-              ListTile(
-                title: TextField(
-                  decoration: const InputDecoration(
-                    hintText: 'Enter City',
-                  ),
-                  controller: _cityFieldController,
-                  keyboardType: TextInputType.text,
-                ),
-              ),
-              ListTile(
-                title: FlatButton(
-                  onPressed: () {
-                    Navigator.pop(context, {
-                      'enter': _cityFieldController.text,
-                    });
-                  },
-                  textColor: Colors.white70,
-                  color: Colors.red,
-                  child: const Text(
-                    'Get Weather',
-                    style: TextStyle(
-                      fontSize: 20.0,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
     );
   }
 }
